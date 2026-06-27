@@ -1,14 +1,10 @@
-import LandingLayout from "./layouts/LandingLayout.tsx"
-import FeaturesPage from "./pages/FeaturesPage.tsx";
-import LandingPage from "./pages/LandingPage.tsx";
-import DashboardLayout from "./layouts/DashboardLayout.tsx";
-import SolutionsPage from "./pages/SolutionsPage.tsx";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./router.tsx";
+
 
 function App() {
     return (
-        <LandingLayout>
-            <SolutionsPage />
-        </LandingLayout>
+        <RouterProvider router={router} />
     );
 }
 
