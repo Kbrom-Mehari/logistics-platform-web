@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { BarChart3, Bell, ChevronDown, LayoutDashboard, Menu, Settings, Users, X } from "lucide-react";
+import { Outlet } from "react-router-dom";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+
+export default function DashboardLayout() {
     const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
     const navigation = [
@@ -127,7 +129,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {/* --- MAIN VIEWPORT --- */}
                 <main className="flex-1 lg:pl-64 p-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
                     <div className="max-w-7xl mx-auto">
-                        {children}
+                        <Outlet />
                     </div>
                 </main>
             </div>
