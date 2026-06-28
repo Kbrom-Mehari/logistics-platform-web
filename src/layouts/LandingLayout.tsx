@@ -1,11 +1,7 @@
-import React from "react";
-
-interface LandingLayoutProps {
-    children: React.ReactNode;
-}
+import {Outlet} from "react-router-dom";
 
 
-export default function LandingLayout({ children }: LandingLayoutProps) {
+export default function LandingLayout() {
     return (
         <div className="h-screen bg-white font-sans text-slate-900 selection:bg-blue-500 selection:text-white scrollbar-none overflow-auto">
 
@@ -18,9 +14,9 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
 
                 {/* Centered Links */}
                 <nav className="hidden md:flex space-x-8 text-[15px] font-medium text-gray-600">
-                    <a href="#features" className="hover:text-blue-600 transition">Features</a>
-                    <a href="#solutions" className="hover:text-blue-600 transition">Solutions</a>
-                    <a href="#pricing" className="hover:text-blue-600 transition">Pricing</a>
+                    <a href="/features" className="hover:text-blue-600 transition">Features</a>
+                    <a href="/solutions" className="hover:text-blue-600 transition">Solutions</a>
+                    <a href="/pricing" className="hover:text-blue-600 transition">Pricing</a>
                 </nav>
 
                 {/* Auth / CTA */}
@@ -33,7 +29,7 @@ export default function LandingLayout({ children }: LandingLayoutProps) {
             </header>
 
             <main className="min-h-screen ">
-                {children}
+                <Outlet />
             </main>
 
         </div>
