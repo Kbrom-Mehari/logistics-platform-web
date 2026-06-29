@@ -30,7 +30,7 @@ export const router = createBrowserRouter(
         },
         {
             path: "*",
-            element: <div>404 - Logistics Hub Not Found</div>,
+            element: <div className="text-4xl flex justify-center items-center mt-64 font-bold">404 - Logistics Hub Not Found</div>,
         }
     ]
 );
