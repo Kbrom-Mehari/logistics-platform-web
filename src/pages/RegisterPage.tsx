@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { registerUser } from '../services/authService';
+import { ApiException } from '../types/api';
 
 export default function SignupForm() {
     // 1. Single object state for all inputs
     const [formData, setFormData] = useState({
-        username: '',
         email: '',
         password: '',
         confirmPassword: '',
@@ -26,12 +27,12 @@ export default function SignupForm() {
     };
 
     // 3. Form submission handler
-    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
         // Basic validation check
-        if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+        if (!formData.email || !formData.password || !formData.confirmPassword) {
             setError('All fields are required.');
             return;
         }
@@ -46,14 +47,33 @@ export default function SignupForm() {
             return;
         }
 
-        // Simulating an API call
-        setIsSubmitting(true);
-        setTimeout(() => {
+        try{
+            setIsSubmitting(true);
+            await registerUser({
+                email: formData.email,
+                password: formData.password
+            });
+
+            setFormData({
+                email: '',
+                password: '',
+                confirmPassword: '',
+            });
+            setError('');
+        }
+        catch(error){
+            if (error instanceof ApiException){
+                setError(error.message);
+            }
+            else{
+                setError('Something went wrong. Please try again.');
+            }
+            
+        }
+        finally{
             setIsSubmitting(false);
-            alert('Account created successfully! 🎉');
-            // Reset form
-            setFormData({ username: '', email: '', password: '', confirmPassword: '' });
-        }, 1500);
+        }
+
     };
 
     return (
@@ -81,23 +101,10 @@ export default function SignupForm() {
 
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4 rounded-md">
-                        {/* Username Input */}
-                        <div>
-                            {/*<label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">*/}
-                            {/*    Username*/}
-                            {/*</label>*/}
-                            <input
-                                id="username"
-                                name="username"
-                                type="text"
-                                value={formData.username}
-                                onChange={handleChange}
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all sm:text-sm"
-                                placeholder="username"
-                            />
-                        </div>
-
                         {/* Email Input */}
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                Email address
+                            </label>
                         <div>
                             {/*<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">*/}
                             {/*    Email address*/}
@@ -109,11 +116,14 @@ export default function SignupForm() {
                                 value={formData.email}
                                 onChange={handleChange}
                                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all sm:text-sm"
-                                placeholder="Email address"
+                                placeholder="name@example.com"
                             />
                         </div>
 
                         {/* Password Input */}
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                                Password
+                            </label>
                         <div>
                             {/*<label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">*/}
                             {/*    Password*/}
@@ -129,15 +139,18 @@ export default function SignupForm() {
                                         ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
                                         : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
-                                placeholder="Password"
+                                placeholder="At least 8 characters"
                             />
                             {/* Password helper */}
-                            {formData.password.length > 0 && formData.password.length < 6 && (
-                                <p className="mt-1 text-xs text-red-600">Password must be at least 6 characters.</p>
+                            {formData.password.length > 0 && formData.password.length < 8 && (
+                                <p className="mt-1 text-xs text-red-600">Password must be at least 8 characters.</p>
                             )}
                         </div>
 
                         {/* Confirm Password Input */}
+                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+                                Confirm Password
+                            </label>
                         <div>
                             <input
                                 id="confirmPassword"
@@ -150,7 +163,7 @@ export default function SignupForm() {
                                         ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
                                         : 'border-gray-300 focus:border-blue-500 focus:ring-blue-100'
                                 }`}
-                                placeholder="Confirm password"
+                                placeholder="Repeat password"
                             />
                             {/* Confirm password helper */}
                             {formData.confirmPassword.length > 0 && formData.password !== formData.confirmPassword && (
