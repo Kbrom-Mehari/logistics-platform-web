@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
+import { ApiException } from '../types/api';
+import { loginUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function LoginPage() {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const successMessage = location.state?.message;
+
+
     // 1. Local component state
     const [credentials, setCredentials] = useState({
         email: '',
@@ -22,7 +32,7 @@ export default function LoginPage() {
     };
 
     // 3. Form submission logic
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setAuthError('');
 
@@ -33,22 +43,40 @@ export default function LoginPage() {
 
         setIsLoading(true);
 
-        // Mocking an authentication API network request
-        setTimeout(() => {
-            setIsLoading(false);
+        try{
+            await loginUser({
+                email: credentials.email,
+                password: credentials.password
+            });
+            
+            navigate('/dashboard'); // Redirect to dashboard or home page after successful login
+            
 
-            // Let's simulate a fake credential check for demonstration purposes
-            if (credentials.email === 'user@example.com' && credentials.password === 'password123') {
-                alert('Welcome back! Login successful. 🚀');
-            } else {
-                setAuthError('Invalid email or password. Please try again.');
+        }
+        catch(error) {
+            if(error instanceof ApiException){
+                setAuthError(error.message);
+            } 
+            else {
+                setAuthError('An error occurred while trying to log in. Please try again.');
             }
-        }, 1200);
+        } 
+        finally {
+            setIsLoading(false);
+        }
     };
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-8 shadow-sm border border-gray-100">
+                
+                {successMessage && (
+                    <div role="alert" aria-live="assertive" className="rounded-lg bg-green-50 p-3 text-sm text-green-700 border border-green-100 mb-4">
+                        {successMessage}
+                    </div>
+                )}
+
+
                 <div className="text-center">
                     <div className="mx-auto inline-flex items-center gap-2 rounded-md px-3 py-1">
                         <div className="text-2xl font-bold text-blue-600">LogiCare</div>
