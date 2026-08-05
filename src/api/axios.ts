@@ -3,7 +3,7 @@ import { setupInterceptors } from "./interceptors";
 
 const apiClient = axios.create({
     
-    baseURL: "http://localhost:8080",
+    baseURL: "http://localhost:8080/api",
     timeout: 10000,
     withCredentials: true,  //tells the browser to include cookies for this request
     headers: {
