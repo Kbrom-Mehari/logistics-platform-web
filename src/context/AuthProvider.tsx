@@ -13,6 +13,7 @@ export function AuthProvider({ children }: AuthProviderProps){
     const [isLoading, setIsLoading] = useState(true);
 
     const refreshUser = useCallback(async () => {
+
         try{
             const currentUser = await loadCurrentUser();
             setUser(currentUser);
@@ -23,6 +24,7 @@ export function AuthProvider({ children }: AuthProviderProps){
         finally{
             setIsLoading(false);
         }
+
     }, []);
 
     const logout = useCallback(async () => {
