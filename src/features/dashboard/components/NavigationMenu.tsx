@@ -1,19 +1,17 @@
-import {filterNavigation, permissions} from "../navigation";
+import {filterNavigation,} from "../navigation";
 import {NavLink} from "react-router-dom";
-// import {useAuth} from "../../../hooks/useAuth.tsx";
+import {useAuth} from "../../../hooks/useAuth.tsx";
 
 interface NavigationMenuProps {
     onItemClick?: ()=>void;
 }
 
-// const { user } = useAuth();
-const userPermissions = [
-    permissions.CREATE_LOAD,
-    permissions.OFFER_SHIPMENT
-];
-const navigation = filterNavigation(userPermissions);
-
 export default function NavigationMenu({onItemClick,}: NavigationMenuProps) {
+
+    const { user } = useAuth();
+    const userPermissions = user?.permissions ?? [];
+    const navigation = filterNavigation(userPermissions);
+
     return (
         <>
             {navigation.map((section) => (
