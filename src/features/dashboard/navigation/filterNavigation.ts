@@ -2,7 +2,7 @@ import type {
     DashboardNavigationItem,
     DashboardNavigationSection,
 } from "./navigationTypes";
-import type {Permission} from "./permissions.ts";
+import type {Permission} from "../../../authorization/permissions.ts";
 import {dashboardNavigation} from "./dashboardNavigation.ts";
 
 /**
