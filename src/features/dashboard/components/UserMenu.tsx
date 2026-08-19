@@ -29,6 +29,9 @@ export default function UserMenu() {
     }
 
     const user = useAuth();
+    const username = user.user?.username ?? "User";
+    const shortName = username.charAt(0).toUpperCase();
+    const email = user.user?.email;
 
     return (
         <div
@@ -41,16 +44,16 @@ export default function UserMenu() {
                 className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-slate-100"
             >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-                    KM
+                    {shortName}
                 </div>
 
                 <div className="hidden text-left md:block">
                     <p className="text-sm font-medium text-slate-900">
-                        Kbrom Mehari
+                        {username}
                     </p>
 
                     <p className="text-xs text-slate-500">
-                        kbrom@example.com
+                        {email}
                     </p>
                 </div>
 
@@ -66,11 +69,11 @@ export default function UserMenu() {
                 <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
                     <div className="border-b border-slate-200 p-4">
                         <p className="font-medium text-slate-900">
-                            Kbrom Mehari
+                            {username}
                         </p>
 
                         <p className="mt-1 text-sm text-slate-500">
-                            kbrom@example.com
+                            {email}
                         </p>
                     </div>
 
