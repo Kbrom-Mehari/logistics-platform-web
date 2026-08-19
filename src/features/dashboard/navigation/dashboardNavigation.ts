@@ -7,10 +7,10 @@ import {
     Construction,
     Users,
     Route,
-    Container, FileStack, LifeBuoy, ClipboardList,
+    Container, LifeBuoy, ClipboardList, AlertCircle, Boxes,
 } from "lucide-react";
 import type { DashboardNavigationSection } from "./navigationTypes.ts";
-import {permissions} from "./permissions.ts";
+// import {permissions} from "../../../authorization/permissions.ts";
 
 export const dashboardNavigation: DashboardNavigationSection[] = [
     {
@@ -26,25 +26,49 @@ export const dashboardNavigation: DashboardNavigationSection[] = [
     },
 
     {
+        section: "Logistics",
+        items: [
+            {
+                label: "Shipments",
+                to: "/dashboard/shipments",
+                icon: Container,
+                requiredPermissions: [],
+            },
+            {
+                label: "Loads",
+                to: "/dashboard/loads",
+                icon: Boxes,
+                requiredPermissions: [],
+            },
+            {
+                label: "Routes",
+                to: "/dashboard/routes",
+                icon: Route,
+                requiredPermissions: [],
+            },
+        ]
+    },
+
+    {
         section: "Fleet",
         items: [
             {
                 label: "Vehicles",
                 to: "/vehicles",
                 icon: Van,
-                requiredPermissions: [permissions.OFFER_SHIPMENT, permissions.CREATE_LOAD,],
+                requiredPermissions: [],
             },
             {
                 label: "Live Tracking",
                 to: "/live-tracking",
                 icon: MapPinned,
-                requiredPermissions: [permissions.OFFER_SHIPMENT, permissions.MANAGE_ROLES],
+                requiredPermissions: [],
             },
             {
                 label: "Trips",
                 to: "/trips",
                 icon: Road,
-                requiredPermissions: [permissions.MANAGE_ROLES],
+                requiredPermissions: [],
             },
             {
                 label: "Maintenance",
@@ -54,29 +78,7 @@ export const dashboardNavigation: DashboardNavigationSection[] = [
             },
         ]
     },
-    {
-        section: "Logistics",
-        items: [
-            {
-                label: "Shipments",
-                to: "/shipments",
-                icon: Container,
-                requiredPermissions: [],
-            },
-            {
-                label: "Orders",
-                to: "/orders",
-                icon: FileStack,
-                requiredPermissions: [],
-            },
-            {
-                label: "Routes",
-                to: "/routes",
-                icon: Route,
-                requiredPermissions: [],
-            },
-        ]
-    },
+
 
     {
         section: "People",
@@ -111,6 +113,12 @@ export const dashboardNavigation: DashboardNavigationSection[] = [
                 icon: BarChart3,
                 requiredPermissions: [],
             },
+            {
+                label: "Alerts",
+                to: "/dashboard/alerts",
+                icon: AlertCircle,
+                requiredPermissions: [],
+            }
         ]
     },
 ]
